@@ -44,6 +44,7 @@ public class Practice11PieChartView extends View{
     private float lineEndY=0;
     
     private int BOTTOM_TEXT_SIZE=28;
+    private int NORMAL_TEXT_SIZE=16;
     private String BOTTOM_TEXT="饼图";
     
     private Paint paint;
@@ -107,21 +108,43 @@ public class Practice11PieChartView extends View{
             setupPaintByPieChartData(temData);
             calculateSweapAngle(temData);
             calculateLinePoint();
+            
             if (temData.getNumber() == maxNumber) {
                 canvas.save();
                 traslateAlittleCanvance(canvas);
                 canvas.drawArc(rectF, startAngle, sweapAngle - 1.0f, true, paint);
+                drawTwoLinesAndText(canvas, temData);
                 canvas.restore();
             }else {
                 canvas.drawArc(rectF, startAngle, sweapAngle - 1.0f, true, paint);
+                setPaintDrawText();
+                drawTwoLinesAndText(canvas, temData);
             }
-            
-            
             startAngle+=sweapAngle;
-            
-            
         }
         
+    }
+    
+    private void drawTwoLinesAndText(Canvas canvas, PieChartData temData){
+        setPaintDrawText();
+        canvas.drawLine(lineStartX, lineStartY, lineEndX, lineEndY, paint);
+        //画横线部分;
+        if (halfAngle > 90 && halfAngle <= 270) {
+            canvas.drawLine(lineEndX, lineEndY, lineEndX - 70.0f, lineEndY, paint);
+            float textLeft=lineEndX - 73.0f - paint.measureText(temData.getName());
+            canvas.drawText(temData.getName(), textLeft, lineEndY, paint);
+        }else {
+            canvas.drawLine(lineEndX, lineEndY, lineEndX + 70.0f, lineEndY, paint);
+            float textLeft=lineEndX + 73.0f;
+            canvas.drawText(temData.getName(), textLeft, lineEndY, paint);
+        }
+    }
+    
+    private void setPaintDrawText(){
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(1);
+        paint.setTextSize(NORMAL_TEXT_SIZE);
+        paint.setColor(Color.WHITE);
     }
     
     private void calculateSweapAngle(PieChartData temData){
@@ -133,15 +156,19 @@ public class Practice11PieChartView extends View{
     }
     
     private void calculateLinePoint(){
-        halfAngle=startAngle + sweapAngle / 2;
-        lineStartX=radius * new Double(Math.cos(halfAngle * Math.PI / 180)).floatValue();
-        lineStartY=radius * new Double(Math.sin(halfAngle * Math.PI / 180)).floatValue();
+        halfAngle=startAngle + sweapAngle / 2.0f;
+        lineStartX=radius * new Double(Math.cos(halfAngle * Math.PI / 180.0f)).floatValue();
+        lineStartY=radius * new Double(Math.sin(halfAngle * Math.PI / 180.0f)).floatValue();
         
         Log.i(TAG, "linestartX is " + lineStartX + "    lineStartY is  " + lineStartY);
+        
+        lineEndX=(radius + 20.0f) * new Double(Math.cos(halfAngle * Math.PI / 180.0f)).floatValue();
+        lineEndY=(radius + 20.0f) * new Double(Math.sin(halfAngle * Math.PI / 180.0f)).floatValue();
+        
     }
     
     private void caclulateRectAndRadius(Canvas canvas){
-        radius=canvas.getWidth() * 0.3f;
+        radius=canvas.getWidth() * 0.2f;
         rectF=new RectF(-radius, -radius, radius, radius);
     }
     
