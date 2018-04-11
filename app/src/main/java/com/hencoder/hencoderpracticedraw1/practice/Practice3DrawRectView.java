@@ -2,28 +2,61 @@ package com.hencoder.hencoderpracticedraw1.practice;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
-public class Practice3DrawRectView extends View {
-
-    public Practice3DrawRectView(Context context) {
+public class Practice3DrawRectView extends View{
+    
+    
+    private int mWidth;
+    private int mHeight;
+    
+    private float rectWidth=150;
+    private float rectHeight=170;
+    private float marginTop=50.0f;
+    
+    
+    public Practice3DrawRectView(Context context){
         super(context);
     }
-
-    public Practice3DrawRectView(Context context, @Nullable AttributeSet attrs) {
+    
+    public Practice3DrawRectView(Context context, @Nullable AttributeSet attrs){
         super(context, attrs);
     }
-
-    public Practice3DrawRectView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    
+    public Practice3DrawRectView(Context context, @Nullable AttributeSet attrs, int defStyleAttr){
         super(context, attrs, defStyleAttr);
     }
-
+    
+    
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onSizeChanged(int w, int h, int oldw, int oldh){
+        super.onSizeChanged(w, h, oldw, oldh);
+        mWidth=w;
+        mHeight=h;
+    }
+    
+    @Override
+    protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
 
 //        练习内容：使用 canvas.drawRect() 方法画矩形
+        
+        Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG);
+        
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(Color.BLACK);
+        
+        float left=mWidth / 2 - rectWidth / 2;
+        float top=marginTop;
+        
+        float right=left + rectWidth;
+        float bottom=marginTop + rectHeight;
+        RectF rectF=new RectF(left, top, right, bottom);
+        canvas.drawRect(rectF, paint);
     }
 }

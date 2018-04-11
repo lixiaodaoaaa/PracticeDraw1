@@ -2,30 +2,53 @@ package com.hencoder.hencoderpracticedraw1.practice;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
-public class Practice4DrawPointView extends View {
-
-    public Practice4DrawPointView(Context context) {
+public class Practice4DrawPointView extends View{
+    
+    
+    private int mWidth;
+    private int mHeight;
+    
+    private float gap=100.0f;
+    
+    
+    public Practice4DrawPointView(Context context){
         super(context);
     }
-
-    public Practice4DrawPointView(Context context, @Nullable AttributeSet attrs) {
+    
+    public Practice4DrawPointView(Context context, @Nullable AttributeSet attrs){
         super(context, attrs);
     }
-
-    public Practice4DrawPointView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    
+    public Practice4DrawPointView(Context context, @Nullable AttributeSet attrs, int defStyleAttr){
         super(context, attrs, defStyleAttr);
     }
-
+    
+    
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onSizeChanged(int w, int h, int oldw, int oldh){
+        super.onSizeChanged(w, h, oldw, oldh);
+        mWidth=w;
+        mHeight=h;
+    }
+    
+    @Override
+    protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
-
-//        练习内容：使用 canvas.drawPoint() 方法画点
-//        一个圆点，一个方点
-//        圆点和方点的切换使用 paint.setStrokeCap(cap)：`ROUND` 是圆点，`BUTT` 或 `SQUARE` 是方点
+        
+        Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setStrokeWidth(15);
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        canvas.drawPoint(Float.parseFloat(String.valueOf(mWidth / 2)) - gap, gap, paint);
+        
+        
+        Paint rectPaint=new Paint(Paint.ANTI_ALIAS_FLAG);
+        rectPaint.setStrokeWidth(15);
+        rectPaint.setStrokeCap(Paint.Cap.SQUARE);
+        canvas.drawPoint(Float.parseFloat(String.valueOf(mWidth / 2)) + gap + 30, gap, rectPaint);
     }
 }
